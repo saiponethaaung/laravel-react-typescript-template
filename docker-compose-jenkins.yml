@@ -1,0 +1,25 @@
+version: '3'
+    
+services:
+    web:
+        image: nginx:latest
+        links: 
+            - php
+        volumes:
+            - ./:/var/www/html
+            - .docker/site.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - 8080:80
+            - 8040:443
+        working_dir: /var/www/html
+
+    php:
+        build: 
+            context: ./
+            dockerfile: .docker/Dockerfile-php-fpm
+        volumes:
+            - ./:/var/www/html
+        working_dir: /var/www/html
+        environment:
+            DB_HOST: ''
+            REDIS_HOST: ''
